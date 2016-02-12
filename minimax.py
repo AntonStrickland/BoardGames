@@ -17,32 +17,32 @@ class MiniMax():
     self.actionSet = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     self.myLetter = 'X'
     self.urLetter = 'O'
+    self.finalAction = None
 
   def MiniMaxDecision(self, initialState):
     print(initialState.grid)
-    return self.MinValue(initialState)
+    v = self.MinValue(initialState)
+    return self.finalAction
     
   def MinValue(self, state):
     if (self.TerminalTest(state)):
       return self.Utility(state)
     v = 99
-    a = None
     for action in self.actionSet:
       if (self.CheckValid(state, action)):
         v = min(v, self.MaxValue(self.Result(state,action, self.myLetter)))
-        a = action
-    return v,a
+        self.finalAction = action
+    return v
     
   def MaxValue(self, state):
     if (self.TerminalTest(state)):
       return self.Utility(state)
     v = -99
-    a = None
     for action in self.actionSet:
       if (self.CheckValid(state, action)):
         v = max(v, self.MinValue(self.Result(state,action, self.urLetter)))
-        a = action
-    return v,a
+        self.finalAction = action
+    return v
 
   def TerminalTest(self, state):
     return self.GoalTest(state, 'O') or self.GoalTest(state, 'X')

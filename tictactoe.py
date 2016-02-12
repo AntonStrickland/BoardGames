@@ -17,7 +17,7 @@ while(test):
   if (aiTurn):
     testState = minimax.State(actualState.grid[:])
     # print(testState)
-    move = game.MiniMaxDecision(testState)[1]
+    move = game.MiniMaxDecision(testState)
     actualState.TakeTurn(move, 'X')
     aiTurn = False
     print(actualState)
