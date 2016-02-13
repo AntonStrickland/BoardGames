@@ -5,7 +5,7 @@ class State():
     self.grid = grid
     
   def TakeTurn(self, action, letter):
-    self.grid[int(action)] = letter
+    self.grid[int(action)-1] = letter
     return
     
   def __str__(self):
@@ -13,13 +13,13 @@ class State():
     
 class MiniMax():
   def __init__(self):
-    self.actionSet = ['0', '1', '2', '3', '4', '5', '6', '7', '8']
+    self.actionSet = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
     self.myLetter = 'X'
     self.urLetter = 'O'
     self.finalAction = None
 
   def MiniMaxDecision(self, initialState):
-    print(initialState.grid)
+    # print(initialState.grid)
     v = self.MinValue(initialState)
     return self.finalAction
     
@@ -67,11 +67,11 @@ class MiniMax():
     return win
     
   def CheckValid(self, state, action):
-    return state.grid[int(action)] != 'O' and state.grid[int(action)] != 'X'
+    return state.grid[int(action)-1] != 'O' and state.grid[int(action)-1] != 'X'
     
   def Result(self, state, action, letter):
     newState = State(state.grid)
-    newState.grid[int(action)] = letter
+    newState.grid[int(action)-1] = letter
     # print("new result")
     # print(newState)
     return newState
