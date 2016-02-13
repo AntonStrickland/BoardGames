@@ -28,8 +28,10 @@ class MiniMax():
       return self.Utility(state)
     v = 99
     for action in self.actionSet:
+      # Only make valid actions
       if (self.CheckValid(state, action)):
-        v = min(v, self.MaxValue(self.Result(state,action, self.myLetter)))
+        v = min(v, self.MaxValue(self.Result(state, action, self.myLetter)))
+        # print("min: " + str(v))
         self.finalAction = action
     return v
     
@@ -38,8 +40,10 @@ class MiniMax():
       return self.Utility(state)
     v = -99
     for action in self.actionSet:
+      # Only make valid actions
       if (self.CheckValid(state, action)):
-        v = max(v, self.MinValue(self.Result(state,action, self.urLetter)))
+        v = max(v, self.MinValue(self.Result(state, action, self.urLetter)))
+        # print("max: " + str(v))
         self.finalAction = action
     return v
 
@@ -64,6 +68,7 @@ class MiniMax():
       win = True
     elif (state.grid [2] == v and state.grid [4] == v and state.grid [6] == v):
       win = True
+    #print(win)
     return win
     
   def CheckValid(self, state, action):
@@ -77,16 +82,21 @@ class MiniMax():
     return newState
     
   def Utility(self, state):
+    u = 0
     if (self.GoalTest(state, 'O')):
       if (self.myLetter == 'O'):
-        return 1
+        u = 1
       else:
-        return -1
+        u = -1
     elif (self.GoalTest(state, 'X')):
       if (self.myLetter == 'X'):
-        return 1
+        u = 1
       else:
-        return -1
+        u = -1
     else:
-      return 0
+      u = 0
+    #print(state)
+    #print("U: " + str(u))
+    #print("---")
+    return u
   
