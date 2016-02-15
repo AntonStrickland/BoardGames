@@ -3,9 +3,16 @@ import sys
 class State():
   def __init__(self, grid):
     self.grid = grid
+    self.aiTurn = True
+    self.currentLetter = 'X'
     
-  def TakeTurn(self, action, letter):
-    self.grid[int(action)-1] = letter
+  def TakeTurn(self, action):
+    self.grid[int(action)-1] = self.currentLetter
+    self.aiTurn = not self.aiTurn
+    if self.currentLetter == 'X':
+      self.currentLetter = 'O'
+    else:
+      self.currentLetter = 'X'
     return
     
   def __str__(self):

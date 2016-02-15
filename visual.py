@@ -5,52 +5,116 @@ screen = pygame.display.set_mode((640,480))
 pygame.init()
 normalFont = pygame.font.SysFont("monospace", 15)
 gameFont = pygame.font.SysFont("monospace", 100)
-delayTime = 10
+headerFont = pygame.font.SysFont("monospace", 30)
+delayTime = 100
 
 colorOrange = (255,165,0)
+colorGray = (92, 92, 92)
 colorBlack = (0,0,0)
+colorWhite = (255, 255, 255)
 
-def visualize(grid):
-  for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-      pygame.quit()
-      sys.exit()
-    # if event.type == pygame.KEYDOWN:
-    #   if event.key == pygame.K_1:
-    #     location -= 1
-    #   if event.key == pygame.K_RIGHT:
-    #     location += 1
+treeList = []
+
+class Visualizer():
+  def __init__(self):
+    self.x = 0
+    self.y = 100
+    
+  def getInput(self):
+    move = '.'
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        pygame.quit()
+        sys.exit()
+      if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_LEFT:
+          self.x -= 100
+        if event.key == pygame.K_RIGHT:
+          self.x += 100
+        if event.key == pygame.K_1:
+          move = '1'
+        if event.key == pygame.K_2:
+          move = '2'
+        if event.key == pygame.K_3:
+          move = '3'
+        if event.key == pygame.K_4:
+          move = '4'
+        if event.key == pygame.K_5:
+          move = '5'
+        if event.key == pygame.K_6:
+          move = '6'
+        if event.key == pygame.K_7:
+          move = '7'
+        if event.key == pygame.K_8:
+          move = '8'
+        if event.key == pygame.K_9:
+          move = '9'
+          
+    return move
+    
+  def visualizeTree(self):
+    for node in treeList:
+      visualize(node, x, y)
+      pygame.display.update()
+      pygame.time.delay(delayTime)
       
-  screen.fill(colorBlack)
+  def checkNextGame(self):
+    move = '-'
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        pygame.quit()
+        sys.exit()
+      if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_y:
+          move = 'Y'
+        if event.key == pygame.K_n:
+          move = 'N'
+    return move
   
-  pygame.draw.lines(screen, colorOrange, False, [(250, 100), (250, 400)], 5)
-  pygame.draw.lines(screen, colorOrange, False, [(150, 200), (450, 200)], 5)
-  pygame.draw.lines(screen, colorOrange, False, [(350, 100), (350, 400)], 5)
-  pygame.draw.lines(screen, colorOrange, False, [(150, 300), (450, 300)], 5)
-  
-  l1 = gameFont.render(str(grid[0]), 1, (255,255,0))
-  l2 = gameFont.render(str(grid[1]), 1, (255,255,0))
-  l3 = gameFont.render(str(grid[2]), 1, (255,255,0))
-  l4 = gameFont.render(str(grid[3]), 1, (255,255,0))
-  l5 = gameFont.render(str(grid[4]), 1, (255,255,0))
-  l6 = gameFont.render(str(grid[5]), 1, (255,255,0))
-  l7 = gameFont.render(str(grid[6]), 1, (255,255,0))
-  l8 = gameFont.render(str(grid[7]), 1, (255,255,0))
-  l9 = gameFont.render(str(grid[8]), 1, (255,255,0))
-  
-  # draw the X's and O's
-  screen.blit(l2, (270,100))
-  screen.blit(l5, (270,200))
-  screen.blit(l8, (270,300))
-  
-  screen.blit(l1, (170,100))
-  screen.blit(l4, (170,200))
-  screen.blit(l7, (170,300))
-  
-  screen.blit(l3, (370,100))
-  screen.blit(l6, (370,200))
-  screen.blit(l9, (370,300))
-  
-  # update the screen
-  pygame.display.update()
-  pygame.time.delay(delayTime)
+  def visualize(self, state, x, y):
+
+    grid = state.grid
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        pygame.quit()
+        sys.exit()
+        
+    screen.fill(colorBlack)
+    
+    pygame.draw.lines(screen, colorOrange, False, [(x+250, 100), (x+250, 400)], 5)
+    pygame.draw.lines(screen, colorOrange, False, [(x+150, 200), (x+450, 200)], 5)
+    pygame.draw.lines(screen, colorOrange, False, [(x+350, 100), (x+350, 400)], 5)
+    pygame.draw.lines(screen, colorOrange, False, [(x+150, 300), (x+450, 300)], 5)
+    
+    header = None
+    if (state.aiTurn is True):
+      header = headerFont.render("AI's Turn", 1, colorWhite)
+    else:
+      header = headerFont.render("Player's Turn", 1, colorWhite)
+    
+    l1 = []
+    for i in grid:
+      if i == 'O' or i == 'X':
+        l1.append(gameFont.render(str(i), 1, colorOrange))
+      else:
+        l1.append(gameFont.render(str(i), 1, colorGray))
+       
+    # draw the X's and O's
+    
+    screen.blit(header, (x+170,60))
+
+    screen.blit(l1[0], (x+170,100))
+    screen.blit(l1[3], (x+170,200))
+    screen.blit(l1[6], (x+170,300))
+    
+    screen.blit(l1[1], (x+270,100))
+    screen.blit(l1[4], (x+270,200))
+    screen.blit(l1[7], (x+270,300))
+    
+    screen.blit(l1[2], (x+370,100))
+    screen.blit(l1[5], (x+370,200))
+    screen.blit(l1[8], (x+370,300))
+    
+    # update the screen
+    pygame.display.update()
+    pygame.time.delay(delayTime)
