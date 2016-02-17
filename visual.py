@@ -58,8 +58,11 @@ class Visualizer():
       pygame.display.update()
       pygame.time.delay(delayTime)
       
-  def checkNextGame(self):
+  def checkNextGame(self, winString):
     move = '-'
+    win = headerFont.render(winString, 1, colorWhite)
+    screen.blit(win, (100,400))
+    pygame.display.update()
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         pygame.quit()
